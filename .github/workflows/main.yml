@@ -1,6 +1,5 @@
 name: Deploy documentations on GitHub Pages
 on:
-  workflow_dispatch
   push:
     branches:
       - docs
