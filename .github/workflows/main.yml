@@ -1,0 +1,15 @@
+name: Deploy documentations on GitHub Pages
+on:
+  push:
+    branches:
+      - docs
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: docs
+      - uses: atirut-w/mkdocs-deploy@master
+        with:
+          extra-packages: mkdocs-material pymdown-extensions mkdocs-git-revision-date-localized-plugin
