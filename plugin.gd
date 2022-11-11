@@ -3,7 +3,8 @@ extends EditorPlugin
 
 
 const settings := {
-	"application/game_jolt_api/private_key": ""
+	"application/game_jolt_api/game_id": 0,
+	"application/game_jolt_api/private_key": "",
 }
 
 
