@@ -9,7 +9,9 @@ const settings := {
 
 func _enter_tree():
 	for setting in settings:
-		ProjectSettings.set_setting(setting, settings[setting])
+		if ProjectSettings[setting] == null:
+			ProjectSettings.set_setting(setting, settings[setting])
+			ProjectSettings.set_initial_value(setting, settings[setting])
 
 
 func _exit_tree():
