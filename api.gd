@@ -12,6 +12,14 @@ func _ready() -> void:
 	_pk = ProjectSettings["application/game_jolt_api/private_key"]
 
 
+func auth(username: String, token: String) -> APIResponse:
+	# TODO: Cache username and token
+	return yield(_api("users/auth", {
+		"username": username,
+		"user_token": token,
+	}), "completed") as APIResponse
+
+
 func _api(endpoint: String, params := {}) -> APIResponse:
 	params["game_id"] = _gid
 
