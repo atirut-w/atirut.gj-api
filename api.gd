@@ -1,6 +1,10 @@
 extends Node
 
 
+var _username: String
+var _token: String
+var _authorized := false
+
 var _gid: int
 var _pk: String
 
@@ -13,7 +17,6 @@ func _ready() -> void:
 
 
 func auth(username: String, token: String) -> APIResponse:
-	# TODO: Cache username and token
 	var response := yield(_api("users/auth", {
 		"username": username,
 		"user_token": token,
@@ -21,6 +24,11 @@ func auth(username: String, token: String) -> APIResponse:
 
 	if response.error == FAILED:
 		response.error = ERR_UNAUTHORIZED
+		_authorized = false
+	else:
+		_username = username
+		_token = token
+		_authorized = true
 
 	return response
 
