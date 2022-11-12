@@ -33,8 +33,12 @@ func auth(username: String, token: String) -> APIResponse:
 	return response
 
 
-func _api(endpoint: String, params := {}) -> APIResponse:
+func _api(endpoint: String, params := {}, auth := false) -> APIResponse:
 	params["game_id"] = _gid
+
+	if auth:
+		params["username"] = _username
+		params["user_token"] = _token
 
 	var url := _url + endpoint + "?"
 	for k in params:
