@@ -10,7 +10,7 @@ const settings := {
 
 func _enter_tree():
 	for setting in settings:
-		if ProjectSettings.get_setting(setting) == null:
+		if ProjectSettings.has_setting(setting) == false:
 			ProjectSettings.set_setting(setting, settings[setting])
 			ProjectSettings.set_initial_value(setting, settings[setting])
 	
