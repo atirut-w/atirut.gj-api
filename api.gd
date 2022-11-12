@@ -33,6 +33,34 @@ func auth(username: String, token: String) -> APIResponse:
 	return response
 
 
+func grant_trophy(id: int) -> APIResponse:
+	var response = yield(_api("trophies/add-achieved", {
+		"trophy_id": id
+	}, true), "completed")
+
+	if response.error == FAILED and response.error != ERR_UNAUTHORIZED:
+		if (response.result as String).match("Incorrect*"):
+			response.error = ERR_DOES_NOT_EXIST
+		else:
+			response.error = ERR_ALREADY_EXISTS
+	
+	return response
+
+
+func revoke_trophy(id: int) -> APIResponse:
+	var response = yield(_api("trophies/remove-achieved", {
+		"trophy_id": id
+	}, true), "completed")
+
+	if response.error == FAILED and response.error != ERR_UNAUTHORIZED:
+		if (response.result as String).match("Incorrect*"):
+			response.error = ERR_DOES_NOT_EXIST
+		else:
+			response.error = ERR_ALREADY_EXISTS
+	
+	return response
+
+
 func _api(endpoint: String, params := {}, auth := false) -> APIResponse:
 	params["game_id"] = _gid
 
