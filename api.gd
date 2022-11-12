@@ -37,8 +37,12 @@ func _api(endpoint: String, params := {}, auth := false) -> APIResponse:
 	params["game_id"] = _gid
 
 	if auth:
-		params["username"] = _username
-		params["user_token"] = _token
+		if _authorized:
+			params["username"] = _username
+			params["user_token"] = _token
+		else:
+			yield(get_tree(), "physics_frame")
+			return APIResponse.new(null, ERR_UNAUTHORIZED)
 
 	var url := _url + endpoint + "?"
 	for k in params:
