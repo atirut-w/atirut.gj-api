@@ -38,7 +38,6 @@ func _api(endpoint: String, params := {}) -> APIResponse:
 	if error != OK:
 		push_error("HTTPRequest error")
 		var response := APIResponse.new("HTTPRequest error", true)
-
 		yield(get_tree(), "physics_frame")
 		return response
 	
