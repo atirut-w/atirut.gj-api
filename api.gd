@@ -37,7 +37,7 @@ func _api(endpoint: String, params := {}) -> APIResponse:
 	var error := httprq.request(url)
 	if error != OK:
 		push_error("HTTPRequest error")
-		var response := APIResponse.new("HTTPRequest error", true)
+		var response := APIResponse.new("HTTPRequest error", error)
 		yield(get_tree(), "physics_frame")
 		return response
 	
@@ -46,16 +46,15 @@ func _api(endpoint: String, params := {}) -> APIResponse:
 
 	if response["success"] == "false":
 		push_error(response["message"])
-		breakpoint # Simulate an "error"
-		return APIResponse.new(response.message, true)
+		return APIResponse.new(response.message, FAILED)
 
 	return APIResponse.new(response)
 
 
 class APIResponse:
-	var is_error: bool
+	var error: int
 	var result
 
-	func _init(r, e := false):
-		is_error = e
+	func _init(r, e := OK):
+		error = e
 		result = r
