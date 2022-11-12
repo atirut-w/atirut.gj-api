@@ -14,10 +14,15 @@ func _ready() -> void:
 
 func auth(username: String, token: String) -> APIResponse:
 	# TODO: Cache username and token
-	return yield(_api("users/auth", {
+	var response := yield(_api("users/auth", {
 		"username": username,
 		"user_token": token,
 	}), "completed") as APIResponse
+
+	if response.error == FAILED:
+		response.error = ERR_UNAUTHORIZED
+
+	return response
 
 
 func _api(endpoint: String, params := {}) -> APIResponse:
