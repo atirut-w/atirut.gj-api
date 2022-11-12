@@ -12,7 +12,8 @@ func _enter_tree():
 	for setting in settings:
 		if ProjectSettings.has_setting(setting) == false:
 			ProjectSettings.set_setting(setting, settings[setting])
-			ProjectSettings.set_initial_value(setting, settings[setting])
+		
+		ProjectSettings.set_initial_value(setting, settings[setting])
 	
 	add_autoload_singleton("GameJolt", "res://addons/atirut.gj-api/api.gd")
 
