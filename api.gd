@@ -3,7 +3,6 @@ extends Node
 
 var _username: String
 var _token: String
-var _authorized := false
 
 var _gid: int
 var _pk: String
@@ -22,13 +21,8 @@ func auth(username: String, token: String) -> APIResponse:
 		"user_token": token,
 	}), "completed") as APIResponse
 
-	if response.error == FAILED:
-		response.error = ERR_UNAUTHORIZED
-		_authorized = false
-	else:
-		_username = username
-		_token = token
-		_authorized = true
+	_username = username
+	_token = token
 
 	return response
 
@@ -39,10 +33,11 @@ func grant_trophy(id: int) -> APIResponse:
 	}, true), "completed")
 
 	if response.error == FAILED and response.error != ERR_UNAUTHORIZED:
-		if (response.result as String).match("Incorrect*"):
+		if "Incorrect trophy" in response.result:
 			response.error = ERR_DOES_NOT_EXIST
-		else:
-			response.error = ERR_ALREADY_EXISTS
+	elif "message" in response.result and "already has this trophy" in response.result.message:
+		response.error = ERR_ALREADY_EXISTS
+		response.result = response.result.message
 	
 	return response
 
@@ -53,10 +48,11 @@ func revoke_trophy(id: int) -> APIResponse:
 	}, true), "completed")
 
 	if response.error == FAILED and response.error != ERR_UNAUTHORIZED:
-		if (response.result as String).match("Incorrect*"):
+		if "Incorrect trophy" in response.result:
 			response.error = ERR_DOES_NOT_EXIST
-		else:
-			response.error = ERR_ALREADY_EXISTS
+	elif "message" in response.result and "does not have this trophy" in response.result.message:
+		response.error = ERR_DOES_NOT_EXIST
+		response.result = response.result.message
 	
 	return response
 
@@ -65,12 +61,8 @@ func _api(endpoint: String, params := {}, auth := false) -> APIResponse:
 	params["game_id"] = _gid
 
 	if auth:
-		if _authorized:
-			params["username"] = _username
-			params["user_token"] = _token
-		else:
-			yield(get_tree(), "physics_frame")
-			return APIResponse.new(null, ERR_UNAUTHORIZED)
+		params["username"] = _username
+		params["user_token"] = _token
 
 	var url := _url + endpoint + "?"
 	for k in params:
@@ -94,8 +86,19 @@ func _api(endpoint: String, params := {}, auth := false) -> APIResponse:
 	var response := JSON.parse(body).result.response as Dictionary
 
 	if response["success"] == "false":
-		push_error(response["message"])
-		return APIResponse.new(response.message, FAILED)
+		var message := response.message as String
+		push_error(message)
+
+		# See: https://gamejolt.com/game-api/doc/errors
+		return APIResponse.new(message, (
+			ERR_DOES_NOT_EXIST if "The game ID you passed in" in message
+			else ERR_UNAUTHORIZED if (
+				"The signature you entered" in message or
+				"No such user" in message or
+				"This key has restrictions" in message
+			)
+			else FAILED
+		))
 
 	return APIResponse.new(response)
 
