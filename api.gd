@@ -69,10 +69,9 @@ func _api(endpoint: String, params := {}, auth := false) -> APIResponse:
 	var url := _url + endpoint + "?"
 	for k in params:
 		url += "%s=%s&" % [k, params[k]]
-	url = url.trim_suffix("&")
 
-	var signature := (url + _pk).md5_text()
-	url += "&signature=" + signature
+	var signature := (url.trim_suffix("&") + _pk).md5_text()
+	url += "signature=" + signature
 	
 	var httprq := HTTPRequest.new()
 	add_child(httprq)
