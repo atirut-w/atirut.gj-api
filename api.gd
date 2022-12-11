@@ -32,6 +32,7 @@ func grant_trophy(id: int) -> APIResponse:
 		"trophy_id": id
 	}, true), "completed")
 
+	# API bug workaround
 	if response.error == FAILED and response.error != ERR_UNAUTHORIZED:
 		if "Incorrect trophy" in response.result:
 			response.error = ERR_DOES_NOT_EXIST
@@ -47,6 +48,7 @@ func revoke_trophy(id: int) -> APIResponse:
 		"trophy_id": id
 	}, true), "completed")
 
+	# API bug workaround
 	if response.error == FAILED and response.error != ERR_UNAUTHORIZED:
 		if "Incorrect trophy" in response.result:
 			response.error = ERR_DOES_NOT_EXIST
