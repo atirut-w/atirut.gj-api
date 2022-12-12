@@ -8,7 +8,7 @@ TODO: Project information
 3. Once finished downloading, extract the zip file into `res://addons/` where `res://` is your project's root directory.
 
 ### As Git submodule
-1. Add this repository as a submodule add `res://addons`
+1. Add this repository as a submodule at `res://addons`
 2. Checkout the branch or tag of the version you want to use.
 
 ## Setting up
