@@ -13,6 +13,9 @@ theme:
     scheme: slate
     primary: lime
     accent: lime
+  
+  icon:
+    repo: fontawesome/brands/github
 
   features:
     - navigation.instant
