@@ -13,3 +13,7 @@ theme:
     scheme: slate
     primary: lime
     accent: lime
+
+  features:
+    - navigation.instant
+    - navigation.tracking
