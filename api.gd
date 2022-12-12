@@ -15,6 +15,7 @@ func _ready() -> void:
 	_pk = ProjectSettings["application/game_jolt_api/private_key"]
 
 
+# Authenticate a user's credentials
 func auth(username: String, token: String) -> APIResponse:
 	var response := yield(_api("users/auth", {
 		"username": username,
@@ -27,6 +28,7 @@ func auth(username: String, token: String) -> APIResponse:
 	return response
 
 
+# Grant a trophy to the user
 func grant_trophy(id: int) -> APIResponse:
 	var response = yield(_api("trophies/add-achieved", {
 		"trophy_id": id
@@ -43,6 +45,7 @@ func grant_trophy(id: int) -> APIResponse:
 	return response
 
 
+# Revoke a trophy from the user
 func revoke_trophy(id: int) -> APIResponse:
 	var response = yield(_api("trophies/remove-achieved", {
 		"trophy_id": id
@@ -59,6 +62,7 @@ func revoke_trophy(id: int) -> APIResponse:
 	return response
 
 
+# Make an API call. Avoid using this externally.
 func _api(endpoint: String, params := {}, auth := false) -> APIResponse:
 	params["game_id"] = _gid
 
