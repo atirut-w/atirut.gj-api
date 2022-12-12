@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+
+site_name: Godot Game Jolt API
+repo_name: atirut-w/godot-game-jolt-api
+repo_url: https://github.com/atirut-w/godot-game-jolt-api
+
+markdown_extensions:
+  - admonition
+
+theme:
+  name: material
+  palette: 
+    scheme: slate
+    primary: lime
+    accent: lime
