@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 
-site_name: Godot Game Jolt API
+site_name: Game Jolt API for Godot documentation
 repo_name: atirut-w/godot-game-jolt-api
 repo_url: https://github.com/atirut-w/godot-game-jolt-api
 
