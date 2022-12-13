@@ -64,12 +64,12 @@ func revoke_trophy(id: int) -> APIResponse:
 
 # Make an API call. Avoid using this externally.
 func _api(endpoint: String, params := {}, auth := false) -> APIResponse:
-	params["game_id"] = _gid
-
+	params.game_id = _gid
 	if auth:
-		params["username"] = _username
-		params["user_token"] = _token
+		params.username = _username
+		params.user_token = _token
 
+	# Append parameters and add signature
 	var url := _url + endpoint + "?"
 	for k in params:
 		url += "%s=%s&" % [k, params[k]]
