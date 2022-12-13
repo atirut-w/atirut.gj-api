@@ -81,14 +81,14 @@ func _api(endpoint: String, params := {}, auth := false) -> APIResponse:
 	var error := httprq.request(url)
 	if error != OK:
 		push_error("HTTPRequest error %d" % error)
-		var response := APIResponse.new("HTTPRequest error", error)
+		var response := APIResponse.new("HTTPRequest error %d" % error, error)
 		yield(get_tree(), "physics_frame")
 		return response
 	
 	var body := (yield(httprq, "request_completed")[3] as PoolByteArray).get_string_from_ascii()
 	var response := JSON.parse(body).result.response as Dictionary
 
-	if response["success"] == "false":
+	if response.success == "false":
 		var message := response.message as String
 		push_error(message)
 
