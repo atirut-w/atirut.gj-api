@@ -82,7 +82,7 @@ func _api(endpoint: String, params := {}, auth := false) -> APIResponse:
 
 	var error := httprq.request(url)
 	if error != OK:
-		push_error("HTTPRequest error")
+		push_error("HTTPRequest error %d" % error)
 		var response := APIResponse.new("HTTPRequest error", error)
 		yield(get_tree(), "physics_frame")
 		return response
